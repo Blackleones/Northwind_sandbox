@@ -1,0 +1,20 @@
+﻿@page "/"
+<DxDataGrid T="Customer" CustomData="CustomersDataSource" PageSize="10">
+     <DxDataGridColumn Field="@nameof(Customer.ContactTitle)" Caption="Title" />
+     <DxDataGridColumn Field="@nameof(Customer.ContactName)" Caption="Name" />
+     <DxDataGridColumn Field="@nameof(Customer.CompanyName)" Caption="Company name" />
+     <DxDataGridComboBoxColumn T="Region" CustomData="RegionsDataSource" Field="@nameof(Customer.Region)" Caption="Region" />
+</DxDataGrid>
+@code  {
+    [Inject] private NorthwindDbContext _context { get; set; }
+
+    private async Task<LoadResult> CustomersDataSource(DataSourceLoadOptionsBase options, CancellationToken cancellationToken)
+    {
+        return await DataSourceLoader.LoadAsync(_context.Customers, options, cancellationToken);
+    }
+
+    private async Task<LoadResult> RegionsDataSource(DataSourceLoadOptionsBase options, CancellationToken cancellationToken)
+    {
+        return await DataSourceLoader.LoadAsync(_context.Regions, options, cancellationToken);
+    }
+}
